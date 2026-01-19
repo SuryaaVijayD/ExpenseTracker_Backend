@@ -24,7 +24,7 @@ public class SecurityConfig {
     private JwtAuthFilter jwtAuthFilter;
 
     @Autowired
-    private PersonDetailsService userDetailsService;
+    private PersonDetailsService personDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,10 +47,8 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
 
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(personDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
-
         return provider;
     }
 
