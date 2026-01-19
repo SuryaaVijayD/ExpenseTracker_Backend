@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter
@@ -18,9 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Entity
 @Table(name = "person_data", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "username"),
-    @UniqueConstraint(columnNames = "email"),
-    @UniqueConstraint(columnNames = "phoneNumber")
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email"),
+        @UniqueConstraint(columnNames = "phoneNumber")
 })
 public class PersonData implements UserDetails {
 
@@ -38,60 +37,34 @@ public class PersonData implements UserDetails {
     private String phoneNumber;
 
     private String salary;
-    
+
     @Column(nullable = false)
     private String password;
 
+    // ---- REQUIRED BY SPRING SECURITY ----
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(); // no roles for now
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public String getUsername() {
-        return username;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getSalary() {
-        return salary;
-    }
-
-    public void setSalary(String salary) {
-        this.salary = salary;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
