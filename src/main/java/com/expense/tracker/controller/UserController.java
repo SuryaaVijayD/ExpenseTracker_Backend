@@ -23,4 +23,3 @@ public class UserController {
         return service.getUserByUsernameDTO(userDetails.getUsername());
     }
 }
-
